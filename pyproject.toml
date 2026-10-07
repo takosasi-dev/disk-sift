@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "disksift"
+version = "0.1.0"
+description = "何がディスクを食っているかを原因別に出し、安全に消せるものはその場で掃除する(ncdu の発展版)"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+disksift = "disksift.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/takosasi-dev/disk-sift"
+
+[tool.setuptools]
+packages = ["disksift"]

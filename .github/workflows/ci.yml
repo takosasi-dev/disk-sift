@@ -1,0 +1,35 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 3.11 は下限、3.14 は Arch が配っている版
+        python: ["3.11", "3.14"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: 偽のファイルシステムでのテスト
+        run: python tests/run_all.py
+
+      # 本物のシステムで一覧を出せるか(消さない)。Ubuntu なので pacman 系は「無し」になる
+      - name: 実物で --report / --json / clean の dry-run
+        run: |
+          python -m disksift --report
+          python -m disksift --json > /dev/null
+          python -m disksift clean user-cache
